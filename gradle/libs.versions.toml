@@ -13,6 +13,7 @@ compose = "2024.12.01"
 navigation-compose = "2.8.5"
 kotlin-serialization = "1.6.3"
 kotlin-serialization_plugins = "1.6.21"
+uiTextGoogleFonts = "1.7.6"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
@@ -27,6 +28,7 @@ androidx-activity = { group = "androidx.activity", name = "activity", version.re
 composeBom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose"}
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose"}
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlin-serialization"}
+androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
