@@ -20,6 +20,6 @@ fun HomeScreen(
             )
         }
     ){ paddingValues ->
-        UniversityListContent(modifier = Modifier.padding(paddingValues))
+        UniversityListContent(modifier = modifier.padding(paddingValues))
     }
 }
