@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.serializable)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hilt.android)
+    alias(libs.plugins.kotlin.ksp)
 }
 
 android {
@@ -25,7 +26,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rles.pro"
             )
         }
     }
@@ -56,8 +57,14 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization)
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
     implementation(libs.hilt.android)
+    implementation(libs.gson)
     kapt(libs.hilt.android.compiler)
+    ksp(libs.room.compiler)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
     implementation(composeBom)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
