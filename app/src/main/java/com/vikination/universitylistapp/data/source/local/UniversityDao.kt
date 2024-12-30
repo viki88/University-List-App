@@ -3,6 +3,7 @@ package com.vikination.universitylistapp.data.source.local
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
+import com.vikination.universitylistapp.data.University
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -14,6 +15,13 @@ interface UniversityDao {
      */
     @Query("SELECT * FROM university")
     fun observeAllUniversities(): Flow<List<LocalUniversity>>
+
+    /**
+     * select all universities from table universities by id
+     * @return university by id
+     */
+    @Query("SELECT * FROM university WHERE id=:id")
+    suspend fun getUniversityById(id: String): List<LocalUniversity>
 
     /**
      * Select all universities from table universities

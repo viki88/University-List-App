@@ -22,7 +22,6 @@ data class UniversityUiState(
     val isLoading: Boolean = false,
     val message: String = "",
     val isConnectionAvailable: Boolean = true
-
 )
 
 @HiltViewModel
@@ -36,8 +35,12 @@ class UniversityViewModel @Inject constructor(
     private val _listUniversities = repository.getUniversitiesStream()
     private val _message = MutableStateFlow("")
     private val _isConnectionAvailable = MutableStateFlow(false)
+
     private val _isOnSearch = MutableStateFlow(false)
     val isOnSearch = _isOnSearch.asStateFlow()
+
+    private val _selectedUniversity = MutableStateFlow(University.emptyUniversity())
+    val selectedUniversity = _selectedUniversity.asStateFlow()
 
     init {
         observeConnectivity()
@@ -90,6 +93,10 @@ class UniversityViewModel @Inject constructor(
 
     fun onClickedActionButton(){
         _isOnSearch.update { !_isOnSearch.value }
+    }
+
+    fun setSelectedUniversity(university: University){
+        _selectedUniversity.update { university }
     }
 
 }

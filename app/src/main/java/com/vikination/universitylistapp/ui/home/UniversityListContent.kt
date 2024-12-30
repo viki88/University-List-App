@@ -45,7 +45,8 @@ fun UniversityListContent(
     listUniversity: List<University>,
     searchText: String,
     onSearchTextChange: (String) -> Unit,
-    isOnSearch: Boolean
+    isOnSearch: Boolean,
+    onSelectedUniversity: (University) -> Unit
 ){
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -75,7 +76,7 @@ fun UniversityListContent(
             visible = isOnSearch
         ) {
             Box(
-                modifier = Modifier.background(MaterialTheme.colorScheme.primary)
+                modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer)
             ){
                 TextField(
                     placeholder = {
@@ -114,7 +115,9 @@ fun UniversityListContent(
         ) {
             LazyColumn {
                 items(listUniversity.sortByName()){
-                    UniversityItem( it)
+                    UniversityItem(
+                        it,
+                        onSelectedUniversity)
                 }
             }
         }
