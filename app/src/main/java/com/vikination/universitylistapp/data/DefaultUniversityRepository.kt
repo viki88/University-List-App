@@ -31,4 +31,12 @@ class DefaultUniversityRepository @Inject constructor(
             localDataSource.upsertAll(universityListFromNetwork.toLocalUniversityList())
         }
     }
+
+    /**
+     * this function for observe connection internet status
+     * @return Status
+     */
+    override fun connectivityObserver(): Flow<NetworkDataSource.Status> {
+        return networkDataSource.observeInternetConnection()
+    }
 }

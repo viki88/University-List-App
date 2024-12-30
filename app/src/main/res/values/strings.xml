@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">University List App</string>
-    <string name="app_bar_title">University List</string>
+    <string name="app_bar_title">Daftar Universitas Indonesia</string>
     <string name="desc_search">Search</string>
 </resources>

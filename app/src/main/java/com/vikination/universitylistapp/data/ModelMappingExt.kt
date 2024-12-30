@@ -27,3 +27,9 @@ fun List<NetworkUniversity>.toUniversityListFromNetwork() = map(NetworkUniversit
 fun List<NetworkUniversity>.toLocalUniversityList() = map(NetworkUniversity::toLocalUniversity)
 
 fun List<LocalUniversity>.toUniversityList() = map(LocalUniversity::toUniversity)
+
+/**
+ * sort list university by name
+ * @return list university sorted by name
+ */
+fun List<University>.sortByName() = this.sortedWith( compareBy { it.name } )
