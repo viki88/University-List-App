@@ -60,7 +60,7 @@ object NetworkModule{
 }
 
 @Module
-@InstallIn
+@InstallIn(SingletonComponent::class)
 abstract class NetworkSourceModule{
 
     @Singleton

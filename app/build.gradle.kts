@@ -35,7 +35,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "1.8"
     }
     buildFeatures{
         compose = true
@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.room.ktx)
     implementation(libs.hilt.android)
     implementation(libs.gson)
+    implementation(libs.hilt.navigation.compose)
     kapt(libs.hilt.android.compiler)
     ksp(libs.room.compiler)
     implementation(libs.retrofit)
