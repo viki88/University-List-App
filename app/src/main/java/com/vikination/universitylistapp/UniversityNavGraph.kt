@@ -20,9 +20,7 @@ fun UniversityNavGraph(
         modifier = modifier
     ) {
         composable<HOME> {
-            HomeScreen(
-                onSearchClicked = {}
-            )
+            HomeScreen()
         }
     }
 

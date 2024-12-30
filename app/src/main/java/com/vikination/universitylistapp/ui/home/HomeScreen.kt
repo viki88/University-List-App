@@ -18,10 +18,13 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    onSearchClicked: () -> Unit,
     viewModel: UniversityViewModel = hiltViewModel(),
 ){
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val searchText by viewModel.searchText.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
+    val isOnSearch by viewModel.isOnSearch.collectAsStateWithLifecycle()
+
     Scaffold(
         snackbarHost = {
             SnackbarHost(snackbarHostState)
@@ -29,11 +32,11 @@ fun HomeScreen(
         modifier = modifier.fillMaxWidth(),
         topBar = {
             UniversityAppBar(
-                onSearchClicked
+                viewModel::onClickedActionButton,
+                isOnSearch
             )
         }
     ){ paddingValues ->
-        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
         LaunchedEffect(uiState.isConnectionAvailable){
             if (!uiState.isConnectionAvailable){
@@ -55,6 +58,9 @@ fun HomeScreen(
             uiState.isLoading,
             !uiState.isConnectionAvailable,
             uiState.universities,
+            searchText,
+            viewModel::onSearchTextChange,
+            isOnSearch
         )
 
     }

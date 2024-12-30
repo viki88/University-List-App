@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -29,10 +30,14 @@ class UniversityViewModel @Inject constructor(
     private val repository: UniversityRepository
 ) :ViewModel(){
 
+    private val _searchText = MutableStateFlow("")
+    val searchText = _searchText.asStateFlow()
     private val _isLoading = MutableStateFlow(false)
     private val _listUniversities = repository.getUniversitiesStream()
     private val _message = MutableStateFlow("")
     private val _isConnectionAvailable = MutableStateFlow(false)
+    private val _isOnSearch = MutableStateFlow(false)
+    val isOnSearch = _isOnSearch.asStateFlow()
 
     init {
         observeConnectivity()
@@ -52,9 +57,17 @@ class UniversityViewModel @Inject constructor(
     }
 
     val uiState :StateFlow<UniversityUiState> = combine(
-        _listUniversities, _isLoading, _message, _isConnectionAvailable
-    ){ listUniversities, isLoading, message , isConnectionAvailable->
-        UniversityUiState(listUniversities, isLoading, message, isConnectionAvailable)
+        _searchText,
+        _listUniversities,
+        _isLoading,
+        _message,
+        _isConnectionAvailable
+    ){ searchText, listUniversities, isLoading, message , isConnectionAvailable->
+        UniversityUiState(
+            if (searchText.isBlank()) listUniversities
+            else {
+                listUniversities.filter { it.name.contains(searchText, ignoreCase = true) }
+            }, isLoading, message, isConnectionAvailable)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(500),
@@ -69,8 +82,14 @@ class UniversityViewModel @Inject constructor(
             }
             _isLoading.update { false }
         }
-
     }
 
+    fun onSearchTextChange(text :String){
+        _searchText.update { text }
+    }
+
+    fun onClickedActionButton(){
+        _isOnSearch.update { !_isOnSearch.value }
+    }
 
 }
