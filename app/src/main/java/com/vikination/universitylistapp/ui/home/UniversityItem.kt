@@ -1,6 +1,7 @@
 package com.vikination.universitylistapp.ui.home
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,11 +28,18 @@ import com.vikination.universitylistapp.data.University
 
 @Composable
 fun UniversityItem(
-    university: University
+    university: University,
+    onSelectedUniversity: (University) -> Unit
 ){
     Card(Modifier.padding(8.dp)){
         Row (
-            modifier = Modifier.padding(8.dp).fillMaxWidth(),
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
+                .clickable {
+                    onSelectedUniversity(university)
+                }
+            ,
             verticalAlignment = Alignment.CenterVertically
         ){
             Box(

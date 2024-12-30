@@ -10,4 +10,6 @@ interface UniversityRepository {
     suspend fun getUniversitiesFromNetwork()
 
     fun connectivityObserver(): Flow<NetworkDataSource.Status>
+
+    suspend fun getUniversityById(id :String): List<University>
 }

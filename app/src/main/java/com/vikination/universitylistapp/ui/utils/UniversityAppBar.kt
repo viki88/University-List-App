@@ -1,14 +1,17 @@
 package com.vikination.universitylistapp.ui.utils
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
@@ -22,7 +25,8 @@ import com.vikination.universitylistapp.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UniversityAppBar(
-    onSearchClick : () -> Unit
+    onActionClick : () -> Unit,
+    isOnSearch: Boolean,
 ){
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -30,11 +34,19 @@ fun UniversityAppBar(
             titleContentColor = MaterialTheme.colorScheme.primary
         ),
         title = {
-            Text(text = stringResource(R.string.app_bar_title)) },
+            Text(text = stringResource(R.string.app_bar_title))
+        },
         actions = {
-            onSearchClick
-            Icon(Icons.Filled.Search, stringResource(R.string.desc_search),
-                modifier = Modifier.padding(horizontal = 8.dp))
+            IconButton(
+                onClick = onActionClick
+            ) {
+                Icon(
+                    if(!isOnSearch) Icons.Filled.Search
+                    else Icons.Filled.Close,
+                    stringResource(R.string.desc_search),
+                    modifier = Modifier.padding(horizontal = 8.dp)
+                )
+            }
         },
         modifier = Modifier.fillMaxWidth()
     )

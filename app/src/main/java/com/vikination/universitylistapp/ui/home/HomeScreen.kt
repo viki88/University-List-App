@@ -12,16 +12,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import com.vikination.universitylistapp.DETAIL
 import com.vikination.universitylistapp.ui.utils.UniversityAppBar
 import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
+    navController: NavController,
+    viewModel: UniversityViewModel,
     modifier: Modifier = Modifier,
-    onSearchClicked: () -> Unit,
-    viewModel: UniversityViewModel = hiltViewModel(),
 ){
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val searchText by viewModel.searchText.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
+    val isOnSearch by viewModel.isOnSearch.collectAsStateWithLifecycle()
+
     Scaffold(
         snackbarHost = {
             SnackbarHost(snackbarHostState)
@@ -29,11 +35,15 @@ fun HomeScreen(
         modifier = modifier.fillMaxWidth(),
         topBar = {
             UniversityAppBar(
-                onSearchClicked
+                viewModel::onClickedActionButton,
+                isOnSearch
             )
         }
     ){ paddingValues ->
-        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+        LaunchedEffect(uiState.universities) {
+            if (uiState.universities.isEmpty()) viewModel.refresh()
+        }
 
         LaunchedEffect(uiState.isConnectionAvailable){
             if (!uiState.isConnectionAvailable){
@@ -55,6 +65,13 @@ fun HomeScreen(
             uiState.isLoading,
             !uiState.isConnectionAvailable,
             uiState.universities,
+            searchText,
+            viewModel::onSearchTextChange,
+            isOnSearch,
+            onSelectedUniversity = { selectedUniversity ->
+                viewModel.setSelectedUniversity(selectedUniversity)
+                navController.navigate(DETAIL)
+            }
         )
 
     }

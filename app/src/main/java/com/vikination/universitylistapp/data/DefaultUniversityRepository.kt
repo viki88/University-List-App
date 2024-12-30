@@ -39,4 +39,10 @@ class DefaultUniversityRepository @Inject constructor(
     override fun connectivityObserver(): Flow<NetworkDataSource.Status> {
         return networkDataSource.observeInternetConnection()
     }
+
+    override suspend fun getUniversityById(id: String): List<University> {
+        return localDataSource.getUniversityById(id).toUniversityList()
+    }
+
+
 }

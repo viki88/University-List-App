@@ -2,4 +2,5 @@
     <string name="app_name">University List App</string>
     <string name="app_bar_title">Daftar Universitas Indonesia</string>
     <string name="desc_search">Search</string>
+    <string name="hint_search_bar">Ketik Universitas..</string>
 </resources>
