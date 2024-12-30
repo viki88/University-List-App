@@ -2,9 +2,15 @@ package com.vikination.universitylistapp.di
 
 import android.content.Context
 import androidx.room.Room
+import com.vikination.universitylistapp.data.DefaultUniversityRepository
+import com.vikination.universitylistapp.data.UniversityRepository
 import com.vikination.universitylistapp.data.source.local.AppDatabase
+import com.vikination.universitylistapp.data.source.local.UniversityDao
 import com.vikination.universitylistapp.data.source.network.ApiService
 import com.vikination.universitylistapp.data.source.network.ConstNetwork
+import com.vikination.universitylistapp.data.source.network.NetworkDataSource
+import com.vikination.universitylistapp.data.source.network.UniversityNetworkDataSource
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,7 +36,7 @@ object DatabaseModule{
 
     @Singleton
     @Provides
-    fun provideUniversityDao(database: AppDatabase) = database.universityDao()
+    fun provideUniversityDao(database: AppDatabase) :UniversityDao = database.universityDao()
 }
 
 @Module
@@ -51,4 +57,23 @@ object NetworkModule{
     fun provideApiService(retrofit: Retrofit) :ApiService{
         return retrofit.create(ApiService::class.java)
     }
+}
+
+@Module
+@InstallIn
+abstract class NetworkSourceModule{
+
+    @Singleton
+    @Binds
+    abstract fun bindNetworkDataSource(universityNetworkDataSource: UniversityNetworkDataSource):NetworkDataSource
+
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class RepositoryModule{
+
+    @Singleton
+    @Binds
+    abstract fun bindUniversityRepository(repository: DefaultUniversityRepository): UniversityRepository
 }

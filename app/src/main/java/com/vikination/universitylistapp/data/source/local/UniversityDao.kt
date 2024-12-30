@@ -1,10 +1,8 @@
 package com.vikination.universitylistapp.data.source.local
 
 import androidx.room.Dao
-import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Upsert
-import com.vikination.universitylistapp.data.University
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -36,6 +34,12 @@ interface UniversityDao {
      * @param universities the universities to be inserted or updated
      */
     @Upsert
-    suspend fun upsertAll(universities: List<University>)
+    suspend fun upsertAll(universities: List<LocalUniversity>)
+
+    /**
+     * Delete all universities
+     */
+    @Query("DELETE from university")
+    suspend fun deleteAll()
 
 }
