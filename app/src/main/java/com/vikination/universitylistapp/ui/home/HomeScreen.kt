@@ -10,9 +10,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.vikination.universitylistapp.DETAIL
 import com.vikination.universitylistapp.ui.utils.UniversityAppBar
 import kotlinx.coroutines.launch
@@ -75,4 +77,13 @@ fun HomeScreen(
         )
 
     }
+}
+
+@Preview
+@Composable
+fun HomeScreenPreview(){
+    HomeScreen(
+        rememberNavController(),
+        hiltViewModel()
+    )
 }

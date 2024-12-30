@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
@@ -76,4 +77,13 @@ fun UniversityItem(
 @Composable
 fun iconThumbColor() :Color{
     return if (isSystemInDarkTheme()) Color.White else MaterialTheme.colorScheme.inverseSurface
+}
+
+@Preview
+@Composable
+fun UniversityItemPreview(){
+    UniversityItem(
+        University("Telkom Unversity","Jawa Barat", "www.google.com"),
+        {}
+    )
 }
