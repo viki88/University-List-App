@@ -18,6 +18,10 @@ class DefaultUniversityRepository @Inject constructor(
     @DefaultDispatcher private val dispatcher: CoroutineDispatcher
 ) :UniversityRepository {
 
+    /**
+     * Observe list of universities from the local data source
+     * @return flow universities
+     */
     override fun getUniversitiesStream(): Flow<List<University>> {
         return localDataSource.observeAllUniversities().map {
             universities ->
@@ -27,6 +31,10 @@ class DefaultUniversityRepository @Inject constructor(
         }
     }
 
+    /**
+     * fetch universities data from API then save to local database
+     * @return response Resource
+     */
     override fun getUniversitiesFromNetwork(): Flow<Resource<List<NetworkUniversity>>> {
         return flow {
             val response = safeApiCall { networkDataSource.loadAllUniversities() }
@@ -50,6 +58,10 @@ class DefaultUniversityRepository @Inject constructor(
         return networkDataSource.observeInternetConnection()
     }
 
+    /**
+     * get university by id
+     * @return university
+     */
     override suspend fun getUniversityById(id: String): List<University> {
         return localDataSource.getUniversityById(id).toUniversityList()
     }

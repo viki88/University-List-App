@@ -9,6 +9,9 @@ interface NetworkDataSource {
 
     fun observeInternetConnection() : Flow<Status>
 
+    /**
+     * Status for connectivity manager
+     */
     enum class Status{
         Available,
         Unavailable,

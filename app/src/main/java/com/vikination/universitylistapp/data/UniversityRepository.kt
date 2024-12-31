@@ -5,7 +5,6 @@ import com.vikination.universitylistapp.data.source.network.NetworkUniversity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
-import okhttp3.ResponseBody
 import okio.IOException
 import retrofit2.HttpException
 import retrofit2.Response

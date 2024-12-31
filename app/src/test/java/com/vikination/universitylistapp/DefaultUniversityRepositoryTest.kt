@@ -96,8 +96,7 @@ class DefaultUniversityRepositoryTest {
 
         val result = mockRepository.getUniversitiesFromNetwork().toList()
 
-        println(result.size)
-        assert(result.size == 1) // Ensure only one value emitted
+        assert(result.size == 1)
         val emittedResource = result.first()
         assert(emittedResource is UniversityRepository.Resource.Success)
         assert((emittedResource as UniversityRepository.Resource.Success).data == mockNetworkUniversities)

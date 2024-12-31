@@ -70,6 +70,8 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)
     implementation(libs.coil.compose)
+    implementation(libs.shimmer.compose)
+    implementation(libs.splash.screen)
     implementation(composeBom)
     debugImplementation(libs.ui.tooling)
     implementation(libs.ui.tooling.preview)

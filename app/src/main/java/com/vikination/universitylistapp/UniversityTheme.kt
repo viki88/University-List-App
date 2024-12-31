@@ -10,10 +10,10 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
-/*
-    Material theme generated from
-    https://material-foundation.github.io/material-theme-builder/
-    including typography, color , and dark/light mode
+/**
+ * Material theme generated from
+ * https://material-foundation.github.io/material-theme-builder/
+ * including typography, color , and dark/light mode
  */
 
 private val lightScheme = lightColorScheme(
