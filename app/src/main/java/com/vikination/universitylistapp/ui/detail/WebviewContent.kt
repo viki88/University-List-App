@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 
@@ -55,4 +56,10 @@ fun WebViewContent(
         }
     }
 
+}
+
+@Preview
+@Composable
+fun WebViewContentPreview(){
+    WebViewContent("http://www.google.com", Modifier)
 }

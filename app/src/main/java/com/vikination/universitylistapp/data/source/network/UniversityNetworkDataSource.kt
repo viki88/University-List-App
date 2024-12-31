@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import javax.inject.Inject
 
 class UniversityNetworkDataSource @Inject constructor (
@@ -20,7 +21,7 @@ class UniversityNetworkDataSource @Inject constructor (
      * fetch universities data from API
      * @return all universities
      */
-    override suspend fun loadAllUniversities(): List<NetworkUniversity> {
+    override suspend fun loadAllUniversities(): Response<List<NetworkUniversity>> {
         return apiService.getUniversities()
     }
 
@@ -32,20 +33,14 @@ class UniversityNetworkDataSource @Inject constructor (
         return callbackFlow {
             val callback = object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
-                    super.onAvailable(network)
-                    println("connection univ available")
                     launch { send( NetworkDataSource.Status.Available ) }
                 }
 
                 override fun onLost(network: Network) {
-                    super.onLost(network)
-                    println("connection univ connection lost")
                     launch { send( NetworkDataSource.Status.Lost ) }
                 }
 
                 override fun onUnavailable() {
-                    super.onUnavailable()
-                    println("connection univ unavailable")
                     launch { send( NetworkDataSource.Status.Unavailable ) }
                 }
             }

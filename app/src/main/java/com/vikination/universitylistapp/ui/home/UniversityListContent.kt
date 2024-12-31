@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vikination.universitylistapp.R
@@ -122,4 +123,21 @@ fun UniversityListContent(
             }
         }
     }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
+@Composable
+fun UniversityListContentPreview(){
+
+    UniversityListContent(
+        modifier = Modifier,
+        {},
+        true,
+        isOfflineMode = true,
+        University.getDummyUniversities(),
+        searchText = "Institute",
+        onSearchTextChange = {},
+        onSelectedUniversity = {University.getDummyUniversity()},
+        isOnSearch = true
+    )
 }
