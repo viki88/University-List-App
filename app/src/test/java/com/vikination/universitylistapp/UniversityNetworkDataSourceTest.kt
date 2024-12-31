@@ -2,8 +2,6 @@ package com.vikination.universitylistapp
 
 import android.content.Context
 import android.net.ConnectivityManager
-import com.vikination.universitylistapp.data.DefaultUniversityRepository
-import com.vikination.universitylistapp.data.source.local.UniversityDao
 import com.vikination.universitylistapp.data.source.network.ApiService
 import com.vikination.universitylistapp.data.source.network.NetworkDataSource
 import com.vikination.universitylistapp.data.source.network.NetworkUniversity
@@ -15,20 +13,13 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
-import io.mockk.mockkStatic
 import io.mockk.slot
-import io.mockk.spyk
 import io.mockk.verify
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import retrofit2.Response

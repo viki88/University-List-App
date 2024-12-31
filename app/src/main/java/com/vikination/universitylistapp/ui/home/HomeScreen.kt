@@ -16,7 +16,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.vikination.universitylistapp.DETAIL
-import com.vikination.universitylistapp.data.UniversityRepository
 import com.vikination.universitylistapp.ui.utils.UniversityAppBar
 import kotlinx.coroutines.launch
 

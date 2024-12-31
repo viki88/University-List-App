@@ -95,4 +95,17 @@ class UniversityViewModelTest {
         assert(viewModel.searchText.value == newSearchText)
     }
 
+    @Test
+    fun setSelectedUniversityUpdatesSelectedUniversity() = runTest{
+        val connectivityFlow = flowOf(NetworkDataSource.Status.Available)
+        every { repository.connectivityObserver() } returns connectivityFlow
+
+        viewModel = UniversityViewModel(repository)
+
+        val newUniversity = University("University 2", "Province 2", "www.university2.com")
+        viewModel.setSelectedUniversity(newUniversity)
+
+        assert(viewModel.selectedUniversity.value == newUniversity)
+    }
+
 }

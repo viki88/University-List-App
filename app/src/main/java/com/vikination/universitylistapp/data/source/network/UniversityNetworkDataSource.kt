@@ -25,6 +25,10 @@ class UniversityNetworkDataSource @Inject constructor (
         return apiService.getUniversities()
     }
 
+    /**
+     * Observe internet connection and return status
+     * @return NetworkDataSource.Status
+     */
     override fun observeInternetConnection(): Flow<NetworkDataSource.Status> {
 
         val connectivityManager =

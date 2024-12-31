@@ -43,11 +43,18 @@ class UniversityViewModel @Inject constructor(
     private val _selectedUniversity = MutableStateFlow(University.emptyUniversity())
     val selectedUniversity = _selectedUniversity.asStateFlow()
 
+    /**
+     * start observe connectivity status and stream universities data from local database
+     */
     init {
         observeConnectivity()
         _listUniversities = repository.getUniversitiesStream()
     }
 
+    /**
+     * Combine [UniversityRepository.getUniversitiesStream] and [_isLoading]
+     * this properties for update [HomeScreenUiState]
+     */
     val homeScreenUiState = repository.getUniversitiesStream()
         .combine(
             _isLoading
@@ -60,6 +67,10 @@ class UniversityViewModel @Inject constructor(
             HomeScreenUiState()
         )
 
+    /**
+     * Combine [UniversityRepository.getUniversitiesStream] and [_searchText]
+     * this property for filter [List<University>] while type some keyword in search box
+     */
     val listUniversitiesUiState = combine(
         _searchText,
         _listUniversities
@@ -74,6 +85,9 @@ class UniversityViewModel @Inject constructor(
         initialValue = emptyList()
     )
 
+    /**
+     * Observe connectivity status and update [_isConnectionAvailable]
+     */
     fun observeConnectivity(){
         viewModelScope.launch(Dispatchers.IO){
             repository.connectivityObserver().collect{
@@ -89,6 +103,9 @@ class UniversityViewModel @Inject constructor(
         }
     }
 
+    /**
+     * refresh data from network and update [_isLoading]
+     */
     fun refresh(){
         viewModelScope.launch {
             _isLoading.update { true }
@@ -97,14 +114,23 @@ class UniversityViewModel @Inject constructor(
         }
     }
 
+    /**
+     * update [_searchText]
+     */
     fun onSearchTextChange(text :String){
         _searchText.update { text }
     }
 
+    /**
+     * update [_isOnSearch]
+     */
     fun onClickedActionButton(){
         _isOnSearch.update { !_isOnSearch.value }
     }
 
+    /**
+     * update [_selectedUniversity]
+     */
     fun setSelectedUniversity(university: University){
         _selectedUniversity.update { university }
     }
