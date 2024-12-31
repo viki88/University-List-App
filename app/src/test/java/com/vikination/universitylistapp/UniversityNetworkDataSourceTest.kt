@@ -31,6 +31,7 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import retrofit2.Response
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class UniversityNetworkDataSourceTest {
@@ -55,11 +56,13 @@ class UniversityNetworkDataSourceTest {
             NetworkUniversity("University 2", "Province 2", listOf("www.example2.com"))
         )
 
-        coEvery { apiService.getUniversities() } returns mockNetworkUniversities
+        val response = Response.success(mockNetworkUniversities)
+
+        coEvery { apiService.getUniversities() } returns response
 
         val result = universityNetworkDataSource.loadAllUniversities()
 
-        assert(result == mockNetworkUniversities)
+        assert(result == response)
 
         coVerify(exactly = 1) { apiService.getUniversities() }
     }
@@ -73,7 +76,6 @@ class UniversityNetworkDataSourceTest {
         val emittedStatus = mutableListOf<NetworkDataSource.Status>()
         val job = launch {
             universityNetworkDataSource.observeInternetConnection().collect { status ->
-                println("Status emitted: $status")
                 emittedStatus.add(status)
             }
         }
@@ -83,8 +85,6 @@ class UniversityNetworkDataSourceTest {
         callbackSlot.captured.onUnavailable()
 
         advanceUntilIdle()
-
-        println("emittedStatus: $emittedStatus")
 
         assert(emittedStatus == listOf(
             NetworkDataSource.Status.Available,
