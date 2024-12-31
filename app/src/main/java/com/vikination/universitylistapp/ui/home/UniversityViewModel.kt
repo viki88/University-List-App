@@ -9,7 +9,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
@@ -17,11 +16,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class UniversityUiState(
-    val universities: List<University> = emptyList(),
+data class HomeScreenUiState(
+    val listUniversities: List<University> = emptyList(),
     val isLoading: Boolean = false,
-    val message: String = "",
-    val isConnectionAvailable: Boolean = true
+    val isConnectionAvailable: Boolean = false
 )
 
 @HiltViewModel
@@ -31,10 +29,12 @@ class UniversityViewModel @Inject constructor(
 
     private val _searchText = MutableStateFlow("")
     val searchText = _searchText.asStateFlow()
+
     private val _isLoading = MutableStateFlow(false)
     private val _listUniversities = repository.getUniversitiesStream()
-    private val _message = MutableStateFlow("")
+
     private val _isConnectionAvailable = MutableStateFlow(false)
+    val isConnectionAvailable = _isConnectionAvailable.asStateFlow()
 
     private val _isOnSearch = MutableStateFlow(false)
     val isOnSearch = _isOnSearch.asStateFlow()
@@ -46,43 +46,49 @@ class UniversityViewModel @Inject constructor(
         observeConnectivity()
     }
 
+    val homeScreenUiState = repository.getUniversitiesStream()
+        .combine(_isLoading){
+            list, isLoading ->
+            HomeScreenUiState(list, isLoading)
+        }.stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            HomeScreenUiState()
+        )
+
+    val listUniversitiesUiState = combine(
+        _searchText,
+        _listUniversities
+    ){ searchText, listUniversities ->
+            if (searchText.isBlank()) listUniversities
+            else {
+                listUniversities.filter { it.name.contains(searchText, ignoreCase = true) }
+            }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
+
     private fun observeConnectivity(){
         viewModelScope.launch(Dispatchers.IO){
             repository.connectivityObserver().collect{
-                status ->
-                _isConnectionAvailable.value = when(status){
-                    NetworkDataSource.Status.Available -> true
-                    NetworkDataSource.Status.Lost,
-                    NetworkDataSource.Status.Unavailable -> false
+                    status ->
+                _isConnectionAvailable.update {
+                    when (status) {
+                        NetworkDataSource.Status.Available -> true
+                        NetworkDataSource.Status.Lost,
+                        NetworkDataSource.Status.Unavailable -> false
+                    }
                 }
             }
         }
     }
 
-    val uiState :StateFlow<UniversityUiState> = combine(
-        _searchText,
-        _listUniversities,
-        _isLoading,
-        _message,
-        _isConnectionAvailable
-    ){ searchText, listUniversities, isLoading, message , isConnectionAvailable->
-        UniversityUiState(
-            if (searchText.isBlank()) listUniversities
-            else {
-                listUniversities.filter { it.name.contains(searchText, ignoreCase = true) }
-            }, isLoading, message, isConnectionAvailable)
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(500),
-        initialValue = UniversityUiState(isLoading = true)
-    )
-
     fun refresh(){
-        _isLoading.update { true }
         viewModelScope.launch {
-            if (_isConnectionAvailable.value){
-                repository.getUniversitiesFromNetwork()
-            }
+            _isLoading.update { true }
+            repository.getUniversitiesFromNetwork().stateIn(viewModelScope)
             _isLoading.update { false }
         }
     }
@@ -98,5 +104,4 @@ class UniversityViewModel @Inject constructor(
     fun setSelectedUniversity(university: University){
         _selectedUniversity.update { university }
     }
-
 }
