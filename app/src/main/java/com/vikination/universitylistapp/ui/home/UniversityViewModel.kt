@@ -7,6 +7,7 @@ import com.vikination.universitylistapp.data.UniversityRepository
 import com.vikination.universitylistapp.data.source.network.NetworkDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,8 +31,8 @@ class UniversityViewModel @Inject constructor(
     private val _searchText = MutableStateFlow("")
     val searchText = _searchText.asStateFlow()
 
-    private val _isLoading = MutableStateFlow(false)
-    private val _listUniversities = repository.getUniversitiesStream()
+    val _isLoading = MutableStateFlow(false)
+    private var _listUniversities: Flow<List<University>>
 
     private val _isConnectionAvailable = MutableStateFlow(false)
     val isConnectionAvailable = _isConnectionAvailable.asStateFlow()
@@ -44,10 +45,13 @@ class UniversityViewModel @Inject constructor(
 
     init {
         observeConnectivity()
+        _listUniversities = repository.getUniversitiesStream()
     }
 
     val homeScreenUiState = repository.getUniversitiesStream()
-        .combine(_isLoading){
+        .combine(
+            _isLoading
+        ){
             list, isLoading ->
             HomeScreenUiState(list, isLoading)
         }.stateIn(
@@ -70,7 +74,7 @@ class UniversityViewModel @Inject constructor(
         initialValue = emptyList()
     )
 
-    private fun observeConnectivity(){
+    fun observeConnectivity(){
         viewModelScope.launch(Dispatchers.IO){
             repository.connectivityObserver().collect{
                     status ->
