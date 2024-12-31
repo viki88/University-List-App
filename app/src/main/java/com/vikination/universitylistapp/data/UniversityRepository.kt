@@ -68,6 +68,5 @@ interface UniversityRepository {
 
         class Error<T>(errorMessage: String) : Resource<T>(message = errorMessage)
 
-        class Loading<T> : Resource<T>()
     }
 }

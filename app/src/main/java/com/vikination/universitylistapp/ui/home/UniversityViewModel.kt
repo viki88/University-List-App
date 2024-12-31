@@ -44,7 +44,6 @@ class UniversityViewModel @Inject constructor(
     val selectedUniversity = _selectedUniversity.asStateFlow()
 
     /**
-     * Initialize the [UniversityViewModel]
      * start observe connectivity status and stream universities data from local database
      */
     init {
