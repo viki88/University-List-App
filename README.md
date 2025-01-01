@@ -22,7 +22,9 @@ University list in Indonesia and its website detail simple Android App.
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![home](screenshots/home_ss.png)
+![search](screenshots/search_ss.png)
+![webview](screenshots/webview_ss.png)
 
 
 ## Appendix
